@@ -17,15 +17,17 @@ function dlm_gf_dynamic_redirect( $confirmation, $form, $entry, $ajax ) {
 		if ( isset( $entry[ $lead_id ] ) ) {
 			$download_id = absint( $entry[ $lead_id ] );
 
-			// create download
-			$download = new DLM_Download( $download_id );
+			try {
+				/** @var DLM_Download $download */
+				$download = download_monitor()->service( 'download_repository' )->retrieve_single( $download_id );
 
-			// check URL
-			if ( '' != $download->get_the_download_link() ) {
-
-				// set redirect
-				$confirmation = array( 'redirect' => $download->get_the_download_link() );
-
+				// check URL
+				if ( '' != $download->get_the_download_link() ) {
+					// set redirect
+					$confirmation = array( 'redirect' => $download->get_the_download_link() );
+				}
+			} catch ( Exception $exception ) {
+				// no download found
 			}
 		}
 
