@@ -1,0 +1,7 @@
+function dlm_my_pa_meta_filter( $meta ) {
+    unset( $meta['post_meta_name'] );  //Replace `post_meta_name` with the name of the post meta you wish to remove
+
+    return $meta;
+}
+
+add_filter( 'dlm_page_addon_download_meta', 'dlm_my_pa_meta_filter', 10, 1 );
