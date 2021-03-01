@@ -1,0 +1,15 @@
+<?php
+
+
+// Tell SearchWP to not index any data for Download Monitor files.
+add_filter( 'searchwp\entry\data', function( $data, $entry ) {
+if ( $entry->get_source()->get_name() !== 'post' . SEARCHWP_SEPARATOR . 'attachment' ) {
+return $data;
+}
+
+if ( false !== strpos( get_attached_file( $entry->get_id() ), '/dlm_uploads/' ) ) {
+$data = [];
+}
+
+return $data;
+}, 999, 2 );
